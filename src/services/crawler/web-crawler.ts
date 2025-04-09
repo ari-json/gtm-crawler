@@ -100,13 +100,13 @@ export class WebCrawler {
     const title = await page.title();
     
     // Extract page content (visible text)
-    const content = await page.evaluate(() => document.body.innerText);
+    const content = await page.evaluate<string>(() => document.body.innerText);
     
     // Extract HTML
     const html = await page.content();
     
     // Extract metadata
-    const metadata = await page.evaluate(() => {
+    const metadata = await page.evaluate<Record<string, string>>(() => {
       const metaTags = Array.from(document.getElementsByTagName('meta'));
       const result: Record<string, string> = {};
       
@@ -122,7 +122,7 @@ export class WebCrawler {
     });
     
     // Extract links that stay within allowed domains
-    const links = await page.evaluate((domains: string[]) => {
+    const links = await page.evaluate<string[]>((domains: string[]) => {
       return Array.from(document.links)
         .map(link => link.href)
         .filter(href => {
