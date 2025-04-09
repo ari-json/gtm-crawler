@@ -3,14 +3,17 @@ declare module 'playwright' {
     content(): Promise<string>;
     evaluate<T>(pageFunction: Function | string, ...args: any[]): Promise<T>;
     goto(url: string, options?: any): Promise<any>;
+    title(): Promise<string>;
+    close(): Promise<void>;
   }
   
   export interface BrowserContext {
     newPage(): Promise<Page>;
+    newContext(options?: any): Promise<BrowserContext>;
   }
   
   export interface Browser {
-    newContext(): Promise<BrowserContext>;
+    newContext(options?: any): Promise<BrowserContext>;
     close(): Promise<void>;
   }
   
