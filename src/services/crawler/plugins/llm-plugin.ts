@@ -28,6 +28,10 @@ export interface LlmPluginOptions {
 export class LlmPlugin implements CrawlerPlugin {
   private openai: OpenAIClient | null = null;
   private readonly options: LlmPluginOptions;
+  
+  // Add required properties from the interface
+  public name: string = 'LLM Plugin';
+  public enabled: boolean = true;
 
   constructor(options: LlmPluginOptions = {}) {
     this.options = {

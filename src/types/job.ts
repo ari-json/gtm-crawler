@@ -31,4 +31,12 @@ export interface CrawlJob {
    * Job status
    */
   status?: 'pending' | 'running' | 'completed' | 'failed';
+  
+  /**
+   * Configuration for the job
+   */
+  config: {
+    maxDepth: number;
+    maxPages: number;
+  };
 } 
