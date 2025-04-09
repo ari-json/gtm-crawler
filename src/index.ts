@@ -1,15 +1,12 @@
 import app from './app';
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-try {
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-} catch (error) {
-  console.error('Failed to start server:', error);
-  process.exit(1);
-}
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Health check available at http://localhost:${PORT}/health`);
+});
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
