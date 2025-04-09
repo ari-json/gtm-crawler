@@ -2,7 +2,6 @@ import express from 'express';
 import llmCrawlRouter from './routes/llm-crawl';
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -19,10 +18,5 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/llm-crawl', llmCrawlRouter);
-
-// Start server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
 
 export default app;
