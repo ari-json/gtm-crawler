@@ -4,14 +4,24 @@ const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Natural Language Web Crawler API',
+      title: 'GTM Crawler API with Claygent-like Research',
       version: '1.0.0',
-      description: 'API for crawling websites using natural language instructions',
+      description: 'API for crawling websites and conducting AI-powered research like Claygent, using natural language instructions',
       contact: {
         name: 'API Support',
         url: 'https://github.com/yourusername/gtm-crawler'
       }
     },
+    tags: [
+      {
+        name: 'Research',
+        description: 'Claygent-like functionality for AI-powered web research'
+      },
+      {
+        name: 'Crawler',
+        description: 'Basic web crawling with LLM analysis'
+      }
+    ],
     servers: [
       {
         url: process.env.API_URL || 'https://gtm-crawler-production.up.railway.app',
