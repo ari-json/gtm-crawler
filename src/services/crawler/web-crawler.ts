@@ -1,4 +1,4 @@
-import type { Browser, Page } from 'playwright';
+import { chromium, Browser, Page } from 'playwright';
 
 interface CrawlOptions {
   maxPages?: number;
@@ -38,8 +38,7 @@ export class WebCrawler {
       ? this.options.allowedDomains 
       : [baseDomain];
     
-    // Import playwright dynamically
-    const { chromium } = await import('playwright');
+    // Launch browser
     const browser = await chromium.launch();
     
     try {
@@ -123,7 +122,7 @@ export class WebCrawler {
     });
     
     // Extract links that stay within allowed domains
-    const links = await page.evaluate((allowedDomains) => {
+    const links = await page.evaluate((domains: string[]) => {
       return Array.from(document.links)
         .map(link => link.href)
         .filter(href => {
@@ -133,7 +132,7 @@ export class WebCrawler {
               // Only keep http/https links
               (url.protocol === 'http:' || url.protocol === 'https:') &&
               // Check if domain is allowed
-              allowedDomains.some(domain => url.hostname === domain || url.hostname.endsWith(`.${domain}`))
+              domains.some(domain => url.hostname === domain || url.hostname.endsWith(`.${domain}`))
             );
           } catch {
             return false;
@@ -147,7 +146,7 @@ export class WebCrawler {
       title,
       content,
       html,
-      links: [...new Set(links)], // Remove duplicates
+      links: [...new Set(links)],
       metadata
     };
   }
