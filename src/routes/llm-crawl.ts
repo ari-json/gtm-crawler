@@ -3,7 +3,51 @@ import { startCrawlJob } from '../services/crawler';
 
 const router = Router();
 
-// Documentation endpoint
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CrawlJobRequest:
+ *       type: object
+ *       required:
+ *         - query
+ *       properties:
+ *         query:
+ *           type: string
+ *           description: Natural language instructions for what to find
+ *         maxPages:
+ *           type: integer
+ *           description: Maximum pages to crawl
+ *           default: 10
+ *         maxDepth:
+ *           type: integer
+ *           description: Maximum crawl depth
+ *           default: 3
+ *       example:
+ *         query: "Find all pricing information and product features"
+ *         maxPages: 20
+ *         maxDepth: 2
+ *     CrawlJobResponse:
+ *       type: object
+ *       properties:
+ *         jobId:
+ *           type: string
+ *         status:
+ *           type: string
+ *         message:
+ *           type: string
+ */
+
+/**
+ * @swagger
+ * /llm-crawl:
+ *   get:
+ *     summary: Get API documentation
+ *     tags: [Crawler]
+ *     responses:
+ *       200:
+ *         description: API documentation
+ */
 router.get('/', (req, res) => {
   res.json({
     message: 'Natural Language Web Crawler API',
@@ -36,7 +80,37 @@ router.get('/', (req, res) => {
   });
 });
 
-// Create a new crawl job with natural language instructions
+/**
+ * @swagger
+ * /llm-crawl/{sitedomain}:
+ *   post:
+ *     summary: Start a new crawl job
+ *     tags: [Crawler]
+ *     parameters:
+ *       - in: path
+ *         name: sitedomain
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Domain to crawl
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CrawlJobRequest'
+ *     responses:
+ *       202:
+ *         description: Job accepted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CrawlJobResponse'
+ *       400:
+ *         description: Invalid input
+ *       500:
+ *         description: Server error
+ */
 router.post('/:sitedomain', async (req, res) => {
   const { sitedomain } = req.params;
   const { query, maxPages = 10, maxDepth = 3 } = req.body;
@@ -69,7 +143,25 @@ router.post('/:sitedomain', async (req, res) => {
   }
 });
 
-// Get job results
+/**
+ * @swagger
+ * /llm-crawl/jobs/{jobId}:
+ *   get:
+ *     summary: Get job results
+ *     tags: [Crawler]
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Job ID
+ *     responses:
+ *       200:
+ *         description: Job results
+ *       404:
+ *         description: Job not found
+ */
 router.get('/jobs/:jobId', async (req, res) => {
   const { jobId } = req.params;
   
